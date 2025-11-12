@@ -71,19 +71,20 @@ const App = () => {
 			console.log('final', finalLink, updatedUrl)
 			// Инициализируем WebViewer только после загрузки fullLink
 			WebViewer.WebComponent(
-				{
-					path: '/webviewer/lib',
-					initialDoc: finalLink,
-					licenseKey:
-						'demo:1736328772922:7eb21df90300000000aae0f4a438996d64f0dd5754eea3e629cf0dd833',
-				},
-				viewer.current
-			).then(instance => {
-				instance.UI.setLanguage('ru')
+  {
+    path: '/webviewer/lib',
+    initialDoc: finalLink,
+    licenseKey: 'demo:1736328772922:7eb21df90300000000aae0f4a438996d64f0dd5754eea3e629cf0dd833',
+  },
+  viewer.current
+).then(instance => {
+  // ВАЖНО: Устанавливаем локальные шрифты СРАЗУ после создания instance
+  instance.Core.setCustomFontURL('/webfonts/v2/');
 
-				const { documentViewer, annotationManager, Annotations } = instance.Core
-			})
-		}
+  instance.UI.setLanguage('ru');
+  const { documentViewer, annotationManager, Annotations } = instance.Core;
+});		
+	}
 
 		fetchData()
 	}, [globalLink]) // fullLink убран из зависимостей, так как его загружаем внутри `fetchData`
